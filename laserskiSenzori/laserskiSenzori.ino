@@ -17,7 +17,7 @@ void setup() {
 }
 
 void loop() {
-  odabirKanala(0);
+  odabirKanala(2);
 
 }
 
@@ -82,6 +82,36 @@ void odabirKanala(int opcija){
 
   }
 
+  // slucaj svi
+  if(opcija == 2){
+
+    // citanje sa parnih kanala
+    for(int i = 0; i < brojSenzora; i++){
+
+      mux.openChannel(i);
+
+      //inicijalizacija senzora
+      senzor.setTimeout(500);
+      if (!senzor.init()){
+      Serial.println("Senzor se nije inicijalizovao");
+      while (1) {}
+      }
+
+      //citanje sa senzora
+      Serial.print("Senzor ");
+      Serial.print(i);
+      Serial.print(":");
+      Serial.println(senzor.readRangeSingleMillimeters());
+      if(senzor.timeoutOccurred()){
+        Serial.println("timeout");
+      }
+      
+      mux.closeChannel(i);
+    }
+
+  }
+
 
 
 }
+// MULTYTHREADING IDEJA, PROBATI NA KRAJU KAD OVO BUDE RADILO
